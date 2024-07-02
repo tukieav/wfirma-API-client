@@ -1,21 +1,17 @@
 const app = require('./app');
 const config = require('./config/config');
-const axios = require('axios');
 const wfirmaService = require('./services/wfirmaService');
 
 // Funkcja do sprawdzenia autoryzacji do API wFirma
 const checkWfirmaAuth = async () => {
     try {
-        const response = await axios.get(`${config.wfirmaApiUrl}/resource`, {
-            headers: {
-                'Authorization': `Bearer ${config.wfirmaApiKey}`
-            }
-        });
-        if (response.status === 200) {
-            console.log('Successfully authenticated with wFirma API');
-        } else {
-            console.error('Failed to authenticate with wFirma API');
-        }
+        console.log('Checking wFirma API authentication...');
+        console.log('wFirma API URL:', config.wfirmaApiUrl);
+        console.log('wFirma App Key:', config.wfirmaAppKey);
+        console.log('wFirma Access Key:', config.wfirmaAccessKey);
+
+        const response = await wfirmaService.fetchData();
+        console.log('Successfully authenticated with wFirma API');
     } catch (error) {
         console.error('Error authenticating with wFirma API:', error.message);
     }
@@ -37,6 +33,10 @@ const getPublicIp = async () => {
 const manageWebhooks = async (publicIp) => {
     try {
         const webhooks = await wfirmaService.getWebhooks();
+        console.log('Fetched webhooks:', webhooks);
+        if (!Array.isArray(webhooks)) {
+            throw new Error('Invalid response format for webhooks');
+        }
         const existingWebhook = webhooks.find(wh => wh.url === `http://${publicIp}:3000/webhook`);
 
         if (existingWebhook) {
