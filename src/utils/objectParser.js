@@ -1,5 +1,13 @@
 module.exports = {
     parse: (obj) => {
-        return JSON.stringify(obj, null, 2);
+        const recursiveParse = (data) => {
+            if (typeof data === 'object' && data !== null) {
+                for (const key in data) {
+                    data[key] = recursiveParse(data[key]);
+                }
+            }
+            return data;
+        };
+        return recursiveParse(obj);
     }
 };
