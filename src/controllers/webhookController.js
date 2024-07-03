@@ -1,10 +1,9 @@
-const pool = require('../db');
+const config = require('../config/config');
 
 exports.handleWebhook = (req, res) => {
     const data = req.body;
     console.log('Webhook received:', data);
 
-    // Przykład dostępu do danych w obiekcie
     const { invoices, status, metainfo } = data;
     const invoiceDetails = invoices['0'].invoice;
     const { limit, page, total } = invoices.parameters;
@@ -16,7 +15,7 @@ exports.handleWebhook = (req, res) => {
     console.log('Status Code:', code);
     console.log('Metainfo:', { company_id, created, object_id, object_name, webhook_event, webhook_id });
 
-    const webhookKey = 'aca700257b337ba79e6254232d60ec99';
+    const webhookKey = config.webhookKey;
 
     res.status(200).json({ webhook_key: webhookKey });
 };
