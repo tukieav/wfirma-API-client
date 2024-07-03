@@ -25,7 +25,6 @@ const getPublicIp = async () => {
 
 const startServer = async () => {
     await checkWfirmaAuth();
-    const publicIp = await getPublicIp();
 
     const PORT = config.port || 3000;
     app.listen(PORT, () => {

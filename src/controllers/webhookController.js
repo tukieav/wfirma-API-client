@@ -1,11 +1,12 @@
 const config = require('../config/config');
+const objectParse = require('../utils/objectParser');
 
 exports.handleWebhook = (req, res) => {
     const data = req.body;
     console.log('Webhook received:', data);
 
     const { invoices, status, metainfo } = data;
-    const invoiceDetails = invoices['0'].invoice;
+    const invoiceDetails = objectParse(invoices['0'].invoice);
     const { limit, page, total } = invoices.parameters;
     const { code } = status;
     const { company_id, created, object_id, object_name, webhook_event, webhook_id } = metainfo;
