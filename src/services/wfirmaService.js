@@ -17,3 +17,10 @@ exports.findCompanies = async () => {
     const response = await axios.get(url, { headers });
     return response.data;
 };
+
+exports.getInvoiceById = async (invoiceId) => {
+    const url = `${config.wfirmaApiUrl}/invoices/get/${invoiceId}?outputFormat=json&inputFormat=json&company_id=${config.companyId}`;
+    const headers = createAuthHeaders();
+    const response = await axios.get(url, { headers });
+    return response.data;
+};
