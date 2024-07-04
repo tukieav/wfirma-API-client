@@ -4,9 +4,8 @@ const wfirmaService = require('./services/wfirmaService');
 
 const checkWfirmaAuth = async () => {
     try {
+        await wfirmaService.findCompanies();
         console.log('Successfully authenticated with wFirma API');
-        const response = await wfirmaService.findCompanies();
-        console.log('Companies:', JSON.stringify(response, null, 2));
     } catch (error) {
         console.error('Error authenticating with wFirma API:', error.message);
     }
