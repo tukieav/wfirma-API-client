@@ -40,7 +40,7 @@ exports.getPaymentById = async (paymentId) => {
 };
 
 exports.getWarehouseGoodById = async (warehouseGoodId) => {
-    const url = `${config.wfirmaApiUrl}/warehouse_goods/get/${warehouseGoodId}?outputFormat=json&inputFormat=json&company_id=${config.companyId}`;
+    const url = `${config.wfirmaApiUrl}/warehousegoods/get/${warehouseGoodId}?outputFormat=json&inputFormat=json&company_id=${config.companyId}`;
     const headers = createAuthHeaders();
     const response = await axios.get(url, { headers });
     return response.data;
