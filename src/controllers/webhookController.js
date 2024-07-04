@@ -47,7 +47,7 @@ const handlePaymentAdd = async (payment) => {
 
 const handleWarehouseGoodChangeState = async (warehouseGood) => {
     try {
-        const warehouseGoodData = await wfirmaService.getWarehouseGoodById(warehouseGood.id);
+        const warehouseGoodData = await wfirmaService.getWarehouseGoodById(warehouseGood.good.id);
         console.log('Warehouse Good data from API:', JSON.stringify(warehouseGoodData, null, 2));
     } catch (error) {
         console.error('Error fetching warehouse good data:', error.message);
