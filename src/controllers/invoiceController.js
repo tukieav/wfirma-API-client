@@ -18,18 +18,18 @@ const saveInvoiceData = async (invoiceData) => {
              ON CONFLICT (contractor_id) DO UPDATE SET
              altname = EXCLUDED.altname, phone = EXCLUDED.phone, email = EXCLUDED.email, name = EXCLUDED.name,
              nip = EXCLUDED.nip, street = EXCLUDED.street, zip = EXCLUDED.zip, city = EXCLUDED.city, country = EXCLUDED.country
-             RETURNING id`,
+             RETURNING contractor_id`,
             [contractor.id, contractor.altname, contractor.phone, contractor.email, contractor.name, contractor.nip, contractor.street, contractor.zip, contractor.city, contractor.country]
         );
 
         // Save invoice data
         const invoice = invoiceData.invoice;
         const invoiceId = await saveData(client, 
-            `INSERT INTO Invoices (invoice_id, number, contractor_id)
+            `INSERT INTO Invoices (invoice_id, fullnumber, contractor_id)
              VALUES ($1, $2, $3)
              ON CONFLICT (invoice_id) DO UPDATE SET
-             number = EXCLUDED.number, contractor_id = EXCLUDED.contractor_id
-             RETURNING id`,
+             fullnumber = EXCLUDED.fullnumber, contractor_id = EXCLUDED.contractor_id
+             RETURNING invoice_id`,
             [invoice.id, invoice.fullnumber, contractorId]
         );
 
