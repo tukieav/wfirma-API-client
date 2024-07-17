@@ -1,16 +1,19 @@
 const { handleWebhook } = require('../../src/controllers/webhookController');
 const httpMocks = require('node-mocks-http');
 
-test('should handle webhook', () => {
+test('should handle webhook', async () => {
     const req = httpMocks.createRequest({
         method: 'POST',
         url: '/webhook',
-        body: { key: 'value' }
+        body: { 
+            metainfo: { webhook_event: 'invoice/add' }, 
+            invoices: [{ invoice: { id: 1 } }] 
+        }
     });
     const res = httpMocks.createResponse();
 
-    handleWebhook(req, res);
+    await handleWebhook(req, res);
 
     expect(res.statusCode).toBe(200);
-    expect(res._getData()).toBe('Webhook received');
+    expect(res._getJSONData()).toEqual({ message: 'Webhook processed successfully' });
 });

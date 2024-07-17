@@ -1,9 +1,11 @@
 const wfirmaService = require('../services/wfirmaService');
+const { saveInvoiceData } = require('./invoiceController');
 
 const handleInvoiceAdd = async (invoice) => {
     try {
         const invoiceData = await wfirmaService.getInvoiceById(invoice.id);
         console.log('Invoice data from API:', JSON.stringify(invoiceData, null, 2));
+        await saveInvoiceData(invoiceData.invoices[0].invoice);
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
     }
