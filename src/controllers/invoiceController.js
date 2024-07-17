@@ -12,6 +12,9 @@ const saveInvoiceData = async (invoiceData) => {
 
         // Save contractor data
         const contractor = invoiceData.contractor_detail;
+        if (!contractor) {
+            throw new Error('Contractor data is missing');
+        }
         const contractorId = await saveData(client, 
             `INSERT INTO Contractors (contractor_id, altname, phone, email, name, nip, street, zip, city, country)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -24,6 +27,9 @@ const saveInvoiceData = async (invoiceData) => {
 
         // Save invoice data
         const invoice = invoiceData.invoice;
+        if (!invoice) {
+            throw new Error('Invoice data is missing');
+        }
         const invoiceId = await saveData(client, 
             `INSERT INTO Invoices (invoice_id, fullnumber, contractor_id)
              VALUES ($1, $2, $3)
@@ -35,6 +41,9 @@ const saveInvoiceData = async (invoiceData) => {
 
         // Save invoice contents
         const invoiceContents = invoiceData.invoicecontents;
+        if (!invoiceContents) {
+            throw new Error('Invoice contents are missing');
+        }
         for (const key in invoiceContents) {
             const content = invoiceContents[key].invoicecontent;
             await saveData(client, 
@@ -49,6 +58,9 @@ const saveInvoiceData = async (invoiceData) => {
 
         // Save VAT contents
         const vatContents = invoiceData.vat_contents;
+        if (!vatContents) {
+            throw new Error('VAT contents are missing');
+        }
         for (const key in vatContents) {
             const vatContent = vatContents[key].vat_content;
             await saveData(client, 

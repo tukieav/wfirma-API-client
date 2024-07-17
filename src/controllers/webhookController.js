@@ -5,7 +5,9 @@ const handleInvoiceAdd = async (invoice) => {
     try {
         const invoiceData = await wfirmaService.getInvoiceById(invoice.id);
         console.log('Invoice data from API:', JSON.stringify(invoiceData, null, 2));
-        await saveInvoiceData(invoiceData.invoices[0].invoice);
+        const invoiceToSave = invoiceData.invoices[0].invoice;
+        console.log('Invoice to save:', JSON.stringify(invoiceToSave, null, 2));
+        await saveInvoiceData(invoiceToSave);
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
     }
