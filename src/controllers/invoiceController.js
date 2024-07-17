@@ -67,3 +67,8 @@ const saveInvoiceData = async (invoiceData) => {
         client.release();
     }
 };
+
+module.exports = {
+    saveInvoiceData,
+    // inne eksporty, jeśli są
+};
