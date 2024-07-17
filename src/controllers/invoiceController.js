@@ -1,3 +1,5 @@
+const pool = require('../db');
+
 const saveData = async (client, query, values) => {
     const result = await client.query(query, values);
     return result.rows[0].id;
