@@ -1,6 +1,3 @@
-const mongoose = require('mongoose');
-const { Contractor, Invoice, InvoiceContent, VatContent } = require('../models/invoice');
-
 const saveInvoiceData = async (invoiceData) => {
     try {
         console.log('Received invoice data:', JSON.stringify(invoiceData, null, 2));
