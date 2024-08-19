@@ -1,12 +1,15 @@
-const { Pool } = require('pg');
+const mongoose = require('mongoose');
 const config = require('./config/config');
 
-const pool = new Pool({
-    user: config.db.user,
-    host: config.db.host,
-    database: config.db.database,
-    password: config.db.password,
-    port: config.db.port
+mongoose.connect(config.mongodbUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
-module.exports = pool;
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+module.exports = db;

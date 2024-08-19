@@ -1,6 +1,7 @@
 const app = require('./app');
 const config = require('./config/config');
 const wfirmaService = require('./services/wfirmaService');
+const mongoose = require('mongoose');
 
 const checkWfirmaAuth = async () => {
     try {
@@ -24,6 +25,17 @@ const getPublicIp = async () => {
 
 const startServer = async () => {
     await checkWfirmaAuth();
+
+    try {
+        await mongoose.connect(config.mongodbUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('Successfully connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error.message);
+        process.exit(1); 
+    }
 
     const PORT = config.port || 3000;
     app.listen(PORT, () => {
