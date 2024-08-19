@@ -21,7 +21,7 @@ const saveInvoiceData = async (invoiceData) => {
         console.log('Contractor saved:', contractorDoc);
 
         // Save invoice data
-        const invoice = invoiceData.invoice;
+        const invoice = invoiceData;
         if (!invoice) {
             throw new Error('Invoice data is missing');
         }
@@ -38,13 +38,13 @@ const saveInvoiceData = async (invoiceData) => {
             throw new Error('Invoice contents are missing');
         }
         for (const key in invoiceContents) {
-            const content = invoiceContents[key].invoicecontent;
-            const contentDoc = await InvoiceContent.findOneAndUpdate(
-                { invoicecontent_id: content.id },
-                { ...content, invoice_id: invoiceDoc._id },
+            const invoiceContent = invoiceContents[key].invoicecontent;
+            const invoiceContentDoc = await InvoiceContent.findOneAndUpdate(
+                { invoicecontent_id: invoiceContent.id },
+                { ...invoiceContent, invoice_id: invoiceDoc._id },
                 { upsert: true, new: true }
             );
-            console.log('Invoice content saved:', contentDoc);
+            console.log('Invoice content saved:', invoiceContentDoc);
         }
 
         // Save VAT contents
