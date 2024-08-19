@@ -1,3 +1,8 @@
+const Contractor = require('../models/Contractor'); // Dodaj ten import
+const Invoice = require('../models/Invoice');
+const InvoiceContent = require('../models/InvoiceContent');
+const VatContent = require('../models/VatContent');
+
 const saveInvoiceData = async (invoiceData) => {
     try {
         console.log('Received invoice data:', JSON.stringify(invoiceData, null, 2));
