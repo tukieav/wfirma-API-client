@@ -1,4 +1,4 @@
-const Contractor = require('../models/Contractor'); // Dodaj ten import
+const Contractor = require('../models/Contractor');
 const Invoice = require('../models/Invoice');
 const InvoiceContent = require('../models/InvoiceContent');
 const VatContent = require('../models/VatContent');
