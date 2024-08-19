@@ -3,8 +3,10 @@ const { Contractor, Invoice, InvoiceContent, VatContent } = require('../models/i
 
 const saveInvoiceData = async (invoiceData) => {
     try {
+        console.log('Received invoice data:', JSON.stringify(invoiceData, null, 2));
         console.log('Saving invoice data:', JSON.stringify(invoiceData, null, 2));
 
+        // Save contractor data
         const contractor = invoiceData.contractor_detail;
         if (!contractor) {
             throw new Error('Contractor data is missing');
@@ -16,6 +18,7 @@ const saveInvoiceData = async (invoiceData) => {
         );
         console.log('Contractor saved:', contractorDoc);
 
+        // Save invoice data
         const invoice = invoiceData.invoice;
         if (!invoice) {
             throw new Error('Invoice data is missing');
@@ -27,6 +30,7 @@ const saveInvoiceData = async (invoiceData) => {
         );
         console.log('Invoice saved:', invoiceDoc);
 
+        // Save invoice contents
         const invoiceContents = invoiceData.invoicecontents;
         if (!invoiceContents) {
             throw new Error('Invoice contents are missing');
@@ -41,6 +45,7 @@ const saveInvoiceData = async (invoiceData) => {
             console.log('Invoice content saved:', contentDoc);
         }
 
+        // Save VAT contents
         const vatContents = invoiceData.vat_contents;
         if (!vatContents) {
             throw new Error('VAT contents are missing');
