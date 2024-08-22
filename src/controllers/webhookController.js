@@ -12,8 +12,18 @@ const handleInvoiceAdd = async (req, res) => {
         }
 
         const invoiceToSave = invoiceData.invoices[0].invoice;
-        console.log('Invoice to save:', JSON.stringify(invoiceToSave, null, 2));
-        await saveInvoiceData(invoiceToSave);
+        const formattedInvoiceData = {
+            contractor_detail: invoiceToSave.contractor_detail,
+            invoice: {
+                id: invoiceToSave.id,
+                fullnumber: invoiceToSave.fullnumber,
+            },
+            invoicecontents: invoiceToSave.invoicecontents,
+            vat_contents: invoiceToSave.vat_contents
+        };
+
+        console.log('Invoice to save:', JSON.stringify(formattedInvoiceData, null, 2));
+        await saveInvoiceData(formattedInvoiceData);
         res.status(200).send('Invoice added successfully');
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
@@ -32,8 +42,23 @@ const handleInvoiceEdit = async (req, res) => {
         }
 
         const invoiceToSave = invoiceData.invoices[0].invoice;
-        console.log('Invoice to save:', JSON.stringify(invoiceToSave, null, 2));
-        await saveInvoiceData(invoiceToSave);
+        const formattedInvoiceData = {
+            contractor_detail: invoiceToSave.contractor_detail,
+            invoice: {
+                id: invoiceToSave.id,
+                fullnumber: invoiceToSave.fullnumber,
+            },
+            invoicecontents: invoiceToSave.invoicecontents,
+            vat_contents: invoiceToSave.vat_contents
+        };
+
+        console.log('Invoice to save:', JSON.stringify(formattedInvoiceData, null, 2));
+
+        // Usunięcie starej faktury
+        await deleteInvoiceData(invoiceToSave.id);
+
+        // Zapis nowej faktury
+        await saveInvoiceData(formattedInvoiceData);
         res.status(200).send('Invoice edited successfully');
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
