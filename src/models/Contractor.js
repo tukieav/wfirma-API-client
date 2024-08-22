@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Definicja schematu dla kontrahenta
 const contractorSchema = new mongoose.Schema({
     contractor_id: Number,
     altname: String,

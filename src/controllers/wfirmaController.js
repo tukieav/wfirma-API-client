@@ -1,6 +1,7 @@
 const wfirmaService = require('../services/wfirmaService');
 const parseObject = require('../utils/objectParser');
 
+// Pobranie danych z API wFirma
 exports.getWfirmaData = async (req, res) => {
     try {
         const data = await wfirmaService.findCompanies();

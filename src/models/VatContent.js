@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Definicja schematu dla zawartości VAT
 const vatContentSchema = new mongoose.Schema({
     vat_content_id: Number,
     netto: Number,

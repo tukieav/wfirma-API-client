@@ -3,6 +3,7 @@ const config = require('./config/config');
 const wfirmaService = require('./services/wfirmaService');
 const mongoose = require('mongoose');
 
+// Sprawdzenie autoryzacji z API wFirma
 const checkWfirmaAuth = async () => {
     try {
         await wfirmaService.findCompanies();
@@ -12,6 +13,7 @@ const checkWfirmaAuth = async () => {
     }
 };
 
+// Pobranie publicznego adresu IP serwera
 const getPublicIp = async () => {
     try {
         const { publicIpv4 } = await import('public-ip');
@@ -23,6 +25,7 @@ const getPublicIp = async () => {
     }
 };
 
+// Uruchomienie serwera
 const startServer = async () => {
     await checkWfirmaAuth();
 

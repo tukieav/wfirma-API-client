@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+// Eksport konfiguracji z pliku .env
 module.exports = {
     port: process.env.PORT,
     wfirmaAppKey: process.env.WFIRMA_APP_KEY,

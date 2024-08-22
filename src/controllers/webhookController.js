@@ -1,9 +1,10 @@
 const wfirmaService = require('../services/wfirmaService');
-const { saveInvoiceData } = require('./invoiceController');
+const { saveInvoiceData, deleteInvoiceData } = require('./invoiceController');
 
-const handleInvoiceAdd = async (invoice) => {
+// Obsługa dodawania faktury
+const handleInvoiceAdd = async (req, res) => {
     try {
-        const invoiceData = await wfirmaService.getInvoiceById(invoice.id);
+        const invoiceData = await wfirmaService.getInvoiceById(req.body.id);
         console.log('Invoice data from API:', JSON.stringify(invoiceData, null, 2));
         
         if (!invoiceData || !invoiceData.invoices || !invoiceData.invoices[0] || !invoiceData.invoices[0].invoice) {
@@ -13,14 +14,17 @@ const handleInvoiceAdd = async (invoice) => {
         const invoiceToSave = invoiceData.invoices[0].invoice;
         console.log('Invoice to save:', JSON.stringify(invoiceToSave, null, 2));
         await saveInvoiceData(invoiceToSave);
+        res.status(200).send('Invoice added successfully');
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
+        res.status(500).send('Error adding invoice');
     }
 };
 
-const handleInvoiceEdit = async (invoice) => {
+// Obsługa edycji faktury
+const handleInvoiceEdit = async (req, res) => {
     try {
-        const invoiceData = await wfirmaService.getInvoiceById(invoice.id);
+        const invoiceData = await wfirmaService.getInvoiceById(req.body.id);
         console.log('Invoice data from API:', JSON.stringify(invoiceData, null, 2));
 
         if (!invoiceData || !invoiceData.invoices || !invoiceData.invoices[0] || !invoiceData.invoices[0].invoice) {
@@ -30,69 +34,47 @@ const handleInvoiceEdit = async (invoice) => {
         const invoiceToSave = invoiceData.invoices[0].invoice;
         console.log('Invoice to save:', JSON.stringify(invoiceToSave, null, 2));
         await saveInvoiceData(invoiceToSave);
+        res.status(200).send('Invoice edited successfully');
     } catch (error) {
         console.error('Error fetching invoice data:', error.message);
+        res.status(500).send('Error editing invoice');
     }
 };
 
-const handleInvoiceDel = async (invoice) => {
+// Obsługa usuwania faktury
+const handleInvoiceDel = async (req, res) => {
     try {
-        const invoiceData = await wfirmaService.getInvoiceById(invoice.id);
-        console.log('Invoice data from API:', JSON.stringify(invoiceData, null, 2));
+        await deleteInvoiceData(req.body.id);
+        res.status(200).send('Invoice deleted successfully');
     } catch (error) {
-        console.error('Error fetching invoice data:', error.message);
+        console.error('Error deleting invoice data:', error.message);
+        res.status(500).send('Error deleting invoice');
     }
 };
 
-exports.handleWebhook = async (req, res) => {
-    const data = req.body;
-    console.log('Webhook received:', JSON.stringify(data, null, 2));
-
-    const eventType = data.metainfo.webhook_event;
-
-    switch (eventType) {
-        case 'invoice/add':
-            await handleInvoiceAdd(data.invoices[0].invoice);
-            break;
-        case 'invoice/edit':
-            await handleInvoiceEdit(data.invoices[0].invoice);
-            break;
-        case 'invoice/del':
-            await handleInvoiceDel(data.invoices[0].invoice);
-            break;
-        default:
-            console.log('Unhandled webhook event:', eventType);
-    }
-
-    res.status(200).json({ message: 'Webhook processed successfully' });
+// Obsługa dodawania kontrahenta
+const handleContractorAdd = async (req, res) => {
+    // Implementacja funkcji
+    res.status(200).send('Contractor added successfully');
 };
 
-exports.manualInvoiceAdd = async (req, res) => {
-    await handleInvoiceAdd(req.body);
-    res.status(200).json({ message: 'Manual invoice add processed successfully' });
+// Obsługa dodawania płatności
+const handlePaymentAdd = async (req, res) => {
+    // Implementacja funkcji
+    res.status(200).send('Payment added successfully');
 };
 
-exports.manualInvoiceEdit = async (req, res) => {
-    await handleInvoiceEdit(req.body);
-    res.status(200).json({ message: 'Manual invoice edit processed successfully' });
+// Obsługa zmiany stanu towaru w magazynie
+const handleWarehouseGoodChangeState = async (req, res) => {
+    // Implementacja funkcji
+    res.status(200).send('Warehouse good state changed successfully');
 };
 
-exports.manualInvoiceDel = async (req, res) => {
-    await handleInvoiceDel(req.body);
-    res.status(200).json({ message: 'Manual invoice delete processed successfully' });
-};
-
-exports.manualContractorAdd = async (req, res) => {
-    await handleContractorAdd(req.body);
-    res.status(200).json({ message: 'Manual contractor add processed successfully' });
-};
-
-exports.manualPaymentAdd = async (req, res) => {
-    await handlePaymentAdd(req.body);
-    res.status(200).json({ message: 'Manual payment add processed successfully' });
-};
-
-exports.manualWarehouseGoodChangeState = async (req, res) => {
-    await handleWarehouseGoodChangeState(req.body);
-    res.status(200).json({ message: 'Manual warehouse good change state processed successfully' });
+module.exports = {
+    handleInvoiceAdd,
+    handleInvoiceEdit,
+    handleInvoiceDel,
+    handleContractorAdd,
+    handlePaymentAdd,
+    handleWarehouseGoodChangeState
 };

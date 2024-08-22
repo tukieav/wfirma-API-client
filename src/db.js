@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('./config/config');
 
+// Połączenie z MongoDB
 mongoose.connect(config.mongodbUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true

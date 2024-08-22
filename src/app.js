@@ -1,15 +1,20 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const webhookRoutes = require('./routes/webhookRoutes');
-const wfirmaRoutes = require('./routes/wfirmaRoutes');
-const errorHandler = require('./middlewares/errorHandler');
-
 const app = express();
-app.use(bodyParser.json());
+const router = express.Router();
+const webhookController = require('./controllers/webhookController');
 
-app.use('/webhook', webhookRoutes);
-app.use('/api/wfirma', wfirmaRoutes);
+// Middleware do parsowania JSON
+app.use(express.json());
 
-app.use(errorHandler);
+// Definicje tras dla webhooków
+router.post('/webhook/invoice/add', webhookController.handleInvoiceAdd);
+router.post('/webhook/invoice/edit', webhookController.handleInvoiceEdit);
+router.post('/webhook/invoice/del', webhookController.handleInvoiceDel);
+router.post('/webhook/contractor/add', webhookController.handleContractorAdd);
+router.post('/webhook/payment/add', webhookController.handlePaymentAdd);
+router.post('/webhook/warehouse_good/change_state', webhookController.handleWarehouseGoodChangeState);
+
+// Użycie routera
+app.use(router);
 
 module.exports = app;

@@ -1,5 +1,6 @@
 const winston = require('winston');
 
+// Konfiguracja loggera
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),

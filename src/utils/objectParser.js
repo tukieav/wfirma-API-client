@@ -1,3 +1,4 @@
+// Parser obiektów
 module.exports = {
     parse: (obj) => {
         const recursiveParse = (data) => {

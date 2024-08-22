@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const webhookController = require('../controllers/webhookController');
 
+// Trasy do obsługi webhooków
 router.post('/', webhookController.handleWebhook);
-
 router.post('/invoice/add', webhookController.manualInvoiceAdd);
 router.post('/invoice/edit', webhookController.manualInvoiceEdit);
 router.post('/invoice/del', webhookController.manualInvoiceDel);
