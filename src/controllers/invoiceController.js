@@ -25,18 +25,42 @@ const saveInvoiceData = async (invoiceData) => {
                 country: contractorData.country
             });
             await contractor.save();
+        } else {
+            // Aktualizacja istniejącego kontrahenta
+            contractor.altname = contractorData.altname;
+            contractor.phone = contractorData.phone;
+            contractor.email = contractorData.email;
+            contractor.name = contractorData.name;
+            contractor.nip = contractorData.nip;
+            contractor.street = contractorData.street;
+            contractor.zip = contractorData.zip;
+            contractor.city = contractorData.city;
+            contractor.country = contractorData.country;
+            await contractor.save();
         }
 
-        // Zapis faktury
-        const invoice = new Invoice({
-            _id: new mongoose.Types.ObjectId(),
-            invoice_id: invoiceData.invoice.id,
-            fullnumber: invoiceData.invoice.fullnumber,
-            contractor_id: contractor._id
-        });
-        await invoice.save();
+        // Sprawdzenie, czy faktura już istnieje
+        let invoice = await Invoice.findOne({ invoice_id: invoiceData.invoice.id });
+        if (!invoice) {
+            // Jeśli faktura nie istnieje, zapisz nową fakturę
+            invoice = new Invoice({
+                _id: new mongoose.Types.ObjectId(),
+                invoice_id: invoiceData.invoice.id,
+                fullnumber: invoiceData.invoice.fullnumber,
+                contractor_id: contractor._id
+            });
+            await invoice.save();
+        } else {
+            // Aktualizacja istniejącej faktury
+            invoice.fullnumber = invoiceData.invoice.fullnumber;
+            invoice.contractor_id = contractor._id;
+            await invoice.save();
+        }
 
-        // Zapis zawartości faktury
+        // Usunięcie starych pozycji faktury
+        await InvoiceContent.deleteMany({ invoice_id: invoice._id });
+
+        // Zapis nowych pozycji faktury
         for (const key in invoiceData.invoicecontents) {
             const contentData = invoiceData.invoicecontents[key].invoicecontent;
             const invoiceContent = new InvoiceContent({
@@ -52,7 +76,10 @@ const saveInvoiceData = async (invoiceData) => {
             await invoiceContent.save();
         }
 
-        // Zapis zawartości VAT
+        // Usunięcie starych zawartości VAT
+        await VatContent.deleteMany({ invoice_id: invoice._id });
+
+        // Zapis nowych zawartości VAT
         for (const key in invoiceData.vat_contents) {
             const vatData = invoiceData.vat_contents[key].vat_content;
             const vatContent = new VatContent({
